@@ -24,7 +24,14 @@ function App() {
 
       <ul>
         {tasks.map((task, index) => ( 
-          <li key = {index}>{task}</li>  
+          <li key = {index}>{task}
+            <button onClick={() => 
+              setTasks(tasks.filter((_,i) => i !== index))
+            }
+             style={{marginLeft: "10px"}}
+            >Delete
+            </button>
+          </li>  
        ))}
       </ul>
     </div>
