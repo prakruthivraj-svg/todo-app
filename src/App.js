@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 function App() {
+  const [filter, setFilter] = useState("all");
   const[editIndex, setEditIndex] = useState(null);
   const[editText, setEditText] = useState("");
   const[task, setTask] = useState(" ");
@@ -21,6 +22,12 @@ function App() {
     ]);
     setTask(" ");
   };
+
+  const filteredTasks = tasks.filter((task) => {
+    if(filter === "completed") return task.completed;
+    if(filter === "pending") return !task.completed;
+    return true;
+  });
   return(
     <div style={{padding: "20px"}}>
       <h1>My To-Do-App</h1>
@@ -34,17 +41,23 @@ function App() {
 
       <button onClick={addTask}>Add</button>
 
+      <div style={{marginBottom: "15px"}}>
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("completed")} style={{marginLeft: "5px"}}>Completed</button>
+        <button onClick={() => setFilter("pending")} style={{marginLeft: "5px"}}>Pending</button>
+      </div>
+
       <ul>
-  {tasks.map((task, index) => (
-    <li
-      key={index}
-      style={{
+        {filteredTasks.map((task, index) => (
+        <li
+        key={index}
+        style={{
         textDecoration: task.completed ? "line-through" : "none",
         cursor: "pointer",
         marginBottom: "8px"
       }}
     >
-      {editIndex === index ? (
+        {editIndex === index ? (
         <>
           <input
             value={editText}
