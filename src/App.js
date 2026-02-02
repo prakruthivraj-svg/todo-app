@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
 function App() {
+  const[editIndex, setEditIndex] = useState(null);
+  const[editText, setEditText] = useState("");
   const[task, setTask] = useState(" ");
   const [tasks, setTasks] = useState(() => {
   const savedTasks = localStorage.getItem("tasks");
@@ -11,7 +13,7 @@ function App() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const addTask = () => {
+    const addTask = () => {
     if(task.trim() === " ") return;
     setTasks([
       ...tasks, 
@@ -33,32 +35,74 @@ function App() {
       <button onClick={addTask}>Add</button>
 
       <ul>
-        {tasks.map((task, index) => ( 
-          <li 
-          key = {index}
-          onClick={() => 
-            setTasks(
-              tasks.map((t,i) => 
-                i === index ? { ...t, completed: !t.completed } : t
-            )
-          )}
-         
-          style={{
-          textDecoration: task.completed ? "line-through" : "none",
-          cursor: "pointer"
-         }}         
-        >{task.text}
-            <button onClick={(e) => {
-            e.stopPropagation();
-            setTasks(tasks.filter((_, i) => i !== index));
-        }}
-        style={{ marginLeft: "10px" }}
-        >Delete
-        </button>
-      </li>  
-      ))}
-    </ul>
-    </div>
+  {tasks.map((task, index) => (
+    <li
+      key={index}
+      style={{
+        textDecoration: task.completed ? "line-through" : "none",
+        cursor: "pointer",
+        marginBottom: "8px"
+      }}
+    >
+      {editIndex === index ? (
+        <>
+          <input
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+          />
+          <button
+            onClick={() => {
+              const updatedTasks = tasks.map((t, i) =>
+                i === index ? { ...t, text: editText } : t
+              );
+              setTasks(updatedTasks);
+              setEditIndex(null);
+            }}
+          >
+            Save
+          </button>
+        </>
+      ) : (
+        <>
+          <span
+            onClick={() =>
+              setTasks(
+                tasks.map((t, i) =>
+                  i === index
+                    ? { ...t, completed: !t.completed }
+                    : t
+                )
+              )
+            }
+          >
+            {task.text}
+          </span>
+
+          <button
+            onClick={() => {
+              setEditIndex(index);
+              setEditText(task.text);
+            }}
+            style={{ marginLeft: "10px" }}
+          >
+            Edit
+          </button>
+
+          <button
+            onClick={() =>
+              setTasks(tasks.filter((_, i) => i !== index))
+            }
+            style={{ marginLeft: "5px" }}
+          >
+            Delete
+          </button>
+        </>
+      )}
+    </li>
+  ))}
+</ul>
+
+</div>
   )
 }
 export default App;
