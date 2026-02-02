@@ -6,7 +6,10 @@ function App() {
 
   const addTask = () => {
     if(task.trim() === " ") return;
-    setTasks([...tasks, task]);
+    setTasks([
+      ...tasks, 
+      {text: task, completed: false}
+    ]);
     setTask(" ");
   };
   return(
@@ -24,16 +27,30 @@ function App() {
 
       <ul>
         {tasks.map((task, index) => ( 
-          <li key = {index}>{task}
-            <button onClick={() => 
-              setTasks(tasks.filter((_,i) => i !== index))
-            }
-             style={{marginLeft: "10px"}}
-            >Delete
-            </button>
-          </li>  
-       ))}
-      </ul>
+          <li 
+          key = {index}
+          onClick={() => 
+            setTasks(
+              tasks.map((t,i) => 
+                i === index ? { ...t, completed: !t.completed } : t
+            )
+          )}
+         
+          style={{
+          textDecoration: task.completed ? "line-through" : "none",
+          cursor: "pointer"
+         }}         
+        >{task.text}
+            <button onClick={(e) => {
+            e.stopPropagation();
+            setTasks(tasks.filter((_, i) => i !== index));
+        }}
+        style={{ marginLeft: "10px" }}
+        >Delete
+        </button>
+      </li>  
+      ))}
+    </ul>
     </div>
   )
 }
