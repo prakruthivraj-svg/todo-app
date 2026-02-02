@@ -1,38 +1,103 @@
-.App {
+body {
+  background: #f4f6f8;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+  width: 400px;
+  margin: 60px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
   text-align: center;
+  color: #333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+input {
+  width: 70%;
+  padding: 8px;
+  font-size: 15px; 
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background: #007bff;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  opacity: 0.9;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  justify-content: center;
 }
+
+.filter-btns {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+ 
+}
+
+
+.filter-btns button {
+  background: #7974d6;
+}
+
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.task-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  background: #0d6efd; /* blue */
+}
+
+.btn-save {
+  background: #198754; /* green */
+}
+
+.btn-delete {
+  background: #dc3545; /* red */
+}
+
+

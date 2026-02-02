@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [filter, setFilter] = useState("all");
@@ -15,7 +16,7 @@ function App() {
   }, [tasks]);
 
     const addTask = () => {
-    if(task.trim() === " ") return;
+    if(task.trim() === "") return;
     setTasks([
       ...tasks, 
       {text: task, completed: false}
@@ -28,42 +29,47 @@ function App() {
     if(filter === "pending") return !task.completed;
     return true;
   });
+
+  const toggleTask = (index) => {
+  const updatedTasks = tasks.map((task, i) =>
+    i === index ? { ...task, completed: !task.completed } : task
+  );
+  setTasks(updatedTasks);
+  };
+
   return(
-    <div style={{padding: "20px"}}>
+    <div className= "app">
       <h1>My To-Do-App</h1>
 
-      <input 
+      <div className="input-row">
+        <input 
         type="text"
         placeholder="Enter a task"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-      />
+        />
 
-      <button onClick={addTask}>Add</button>
+        <button onClick={addTask}>Add</button>
+      </div>
 
-      <div style={{marginBottom: "15px"}}>
+      <div className= "filter-btns">
         <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("completed")} style={{marginLeft: "5px"}}>Completed</button>
-        <button onClick={() => setFilter("pending")} style={{marginLeft: "5px"}}>Pending</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
+        <button onClick={() => setFilter("pending")}>Pending</button>
       </div>
 
       <ul>
         {filteredTasks.map((task, index) => (
         <li
         key={index}
-        style={{
-        textDecoration: task.completed ? "line-through" : "none",
-        cursor: "pointer",
-        marginBottom: "8px"
-      }}
-    >
+        >
         {editIndex === index ? (
         <>
           <input
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
           />
-          <button
+          <button className="btn-save"
             onClick={() => {
               const updatedTasks = tasks.map((t, i) =>
                 i === index ? { ...t, text: editText } : t
@@ -78,37 +84,30 @@ function App() {
       ) : (
         <>
           <span
-            onClick={() =>
-              setTasks(
-                tasks.map((t, i) =>
-                  i === index
-                    ? { ...t, completed: !t.completed }
-                    : t
-                )
-              )
-            }
+            className={task.completed ? "completed" : ""}
+            onClick={() => toggleTask(index)}
+            
           >
-            {task.text}
+           {task.text}
           </span>
 
-          <button
-            onClick={() => {
+
+          <div className="actions">
+            <button className="btn-edit" onClick={() => {
               setEditIndex(index);
               setEditText(task.text);
             }}
-            style={{ marginLeft: "10px" }}
-          >
+            >
             Edit
-          </button>
-
-          <button
-            onClick={() =>
+            </button>
+          
+            <button className="btn-delete" onClick={() =>
               setTasks(tasks.filter((_, i) => i !== index))
             }
-            style={{ marginLeft: "5px" }}
-          >
+            >
             Delete
-          </button>
+            </button>
+          </div>
         </>
       )}
     </li>
